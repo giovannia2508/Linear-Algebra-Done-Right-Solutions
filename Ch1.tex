@@ -1,0 +1,576 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx} 
+\usepackage{amsmath}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{enumerate}
+\usepackage[shortlabels]{enumitem}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{cases}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FANCYHDR SETUP (For pages 2 and onwards)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{fancy}
+\fancyhead[l]{Giovanni Antonini}
+\fancyhead[c]{Chapter 1: Vector Spaces}
+\fancyfoot[c]{\thepage}
+\renewcommand{\headrulewidth}{0.2pt} 
+\setlength{\headheight}{15pt}        
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PROBLEM ENVIRONMENT BOXES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{tcolorbox}
+\tcbuselibrary{theorems, breakable, skins}
+\newtcbtheorem{prob}% environment name
+              {Problem}% Title text
+  {enhanced, % tcolorbox styles
+  attach boxed title to top left={xshift = 4mm, yshift=-2mm},
+  colback=blue!5, colframe=black, colbacktitle=blue!3, coltitle=black,
+  boxed title style={size=small,colframe=gray},
+  fonttitle=\bfseries,
+  separator sign none
+  }%
+  {} 
+\newenvironment{problem}[1]{\begin{prob*}{#1}{}}{\end{prob*}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SHORTCUT COMMANDS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\begin{document}
+
+% ====================================================================
+% FIRST PAGE TITLE & CHAPTER BLOCK
+% ====================================================================
+\begin{center}
+    \vspace*{1em}
+    {\large \emph{Linear Algebra Done Right}, by Sheldon Axler} \\[0.5em]
+    {\LARGE \bfseries Chapter 1: Vector Spaces} \\[0.3em]
+    \vspace{1.5em}
+\end{center}
+
+% This single command tells LaTeX to hide the running headers on THIS page only:
+\thispagestyle{plain} 
+
+% ====================================================================
+% CONTENT
+% ====================================================================
+
+% ====================================================================
+% SECTION 1A: R^n and C^n
+% ====================================================================
+\section*{Section 1A: $\R^n$ and $\C^n$}
+
+For problems 1-8, let $\alpha =a + bi$, $\beta = c+di$, and $\lambda = e+fi$ 
+
+\begin{problem}{1}
+Show that $\alpha + \beta =\beta + \alpha$ $\forall\alpha,\beta\in \mathbb{C}$
+\end{problem}
+\begin{proof}
+    \begin{align*}
+        \alpha + \beta &= (a+c)+(b+d)i \\
+        &=(c+a)+(d+b)i \\
+        &=\beta + \alpha
+    \end{align*}
+    Equalities 1 and 3 hold because of the definition of addition on $\mathbb{C}$ and equality 2 holds because of the commutativity of addition on $\mathbb{R}$.
+\end{proof}
+
+\begin{problem}{2}
+Show that $(\alpha + \beta) + \lambda = \alpha + (\beta + \lambda)$ $\forall \alpha, \beta, \lambda \in \mathbb{C}$
+\end{problem}
+\begin{proof}
+    \begin{align*}
+        (\alpha + \beta) + \lambda &=[(a+c)+(b+d)i]+(e+fi)\\
+        &=[(a+c)+e]+[(b+d)+f]i\\
+        &=[a+(c+e)]+[b+(d+f)]i\\
+        &=(a+bi)+[(c+e)+(d+f)i]\\
+        &=\alpha + (\beta + \lambda)
+    \end{align*}
+    Equalities 1, 2, 4, and 5 hold by the definition of addition on $\mathbb{C}$. Equality 3 holds by the associative property of addition on $\mathbb{R}$.
+\end{proof}
+
+\begin{problem}{3}
+Show that $(\alpha\beta)\lambda =\alpha(\beta \lambda)$ $\forall \alpha,\beta,\lambda \in \mathbb{C}$
+\end{problem}
+\begin{proof}
+    \begin{align*}
+        (\alpha\beta)\lambda &=[(ac-bd)+(ad+bc)i](e+fi)\\
+        &= [(ac-bd)e-(ad+bc)f]+[(ac-bd)f+(ad+bc)e]i\\
+        &= (ace-bde-adf-bcf) +(acf-bdf+ade+bce)i\\
+        &= [a(ce-df)-b(cf+de)]+[a(cf+de)+b(ce-df)]i\\
+        &= (a+bi)[(ce-df)+(cf+de)i]\\
+        &= \alpha(\beta\lambda) 
+    \end{align*}
+    Equalities 1, 2, 5, and 6 hold by the definition of multiplication on $\mathbb{C}$. Equalities 3 and 4 hold by the commutative property of addition on $\mathbb{R}$ and the distributive property on $\mathbb{R}$.
+\end{proof}
+
+\begin{problem}{4}
+Show that $\lambda(\alpha + \beta) = \lambda\alpha + \lambda\beta$ $\forall \alpha, \beta, \lambda \in \mathbb{C}$
+\end{problem}
+\begin{proof}
+    \begin{align*}
+        \lambda(\alpha + \beta) &= (e+fi)[(a+c)+(b+d)i]\\
+        &= [e(a+c)-f(b+d)]+[e(b+d)+f(a+c)]i\\
+        &=[(ea-fb)+(ec-fd)]+[(eb+fa)+(ed+fc)]i\\
+        &=[(ea-fb)+(eb+fa)i]+[(ec-fd)+(ed+fc)i]\\
+        &=\lambda\alpha +\lambda\beta
+    \end{align*}
+    Equalities 1, 2, and 5 hold true by the definition of multiplication on $\mathbb{C}$.
+    Equality 3 holds true because of the commutativity of addition on $\mathbb{R}$ and by the distributive property on $\mathbb{R}$. Finally, equality 4 holds true by the definition of addition on $\mathbb{C}$.
+\end{proof}
+
+\begin{problem}{5}
+Show that for every $\alpha \in \mathbb{C}$, there exists a unique $\beta \in \mathbb{C}$ such that $\alpha + \beta =0$
+\end{problem}
+\begin{proof}
+    Let $\alpha=a + bi$ and $\beta = c+di$. 
+    \[\alpha + \beta =0\]
+    can be rewritten as
+    \[(a+bi)+(c+di)=0\]
+    and then as
+    \[(a+c)+(b+d)i=0\]
+    by the definition of addition on $\mathbb{C}$. Then $c$ must be the unique additive inverse of $a$ in $\mathbb{R}$ and $d$ must be the unique additive inverse of $b$ in $\mathbb{R}$. Recall there exists a bijection
+    \[f: \mathbb{R}^2\to \mathbb{C}\]
+    therefore for every $(r_1,r_2)\in \mathbb{R}^2$ there exists one unique $c\in \mathbb{C}$. Therefore, the pair $(c,d)\in \mathbb{R}$ is mapped to the unique number $c+di=\beta\in\mathbb{C}$.
+\end{proof}
+
+\begin{problem}{6}
+Show that for every $\alpha \in \mathbb{C}$ with $\alpha \ne 0$, there exists a unique $\beta \in \mathbb{C}$ such that $\alpha \beta=1$
+\end{problem}
+\begin{proof}
+    Let $\alpha = a + b$ and $\beta = b+di$. Then
+    \[\alpha\beta =1 \implies (a+bi)(c+di)=1 \implies (ac-bd)+(ad+bc)i=1\]
+    Recall that for $1\in \mathbb{R}\subset \mathbb{C}$, $1=1+0i$. So, 
+    \begin{align}
+        ac-bd=1 \\
+        ad+bc=0
+    \end{align}
+    Therefore we can solve for $c$ and $d$ in terms of $a$ and $b$. Rewriting (1)
+    \begin{align}
+        c=\frac{1+bd}{a}
+    \end{align}
+
+    Now we can substitute $c$ into (2):
+    \begin{align*}
+        ad+b(\frac{1+bd}{a})&=0\\
+        ad+\frac{b}{a}+\frac{b^2d}{a}&=0\\
+        d(a+\frac{b^2}{a})+\frac{b}{a}&=0\\
+    \end{align*}
+    And solving for $d$:
+    \begin{align*}
+        d&=-\frac{b}{a} \left(\frac{1}{a+\frac{b^2}
+        {a}}\right)\\ 
+        &d= \frac{-b}{a^2+b^2}
+    \end{align*}
+    Lastly we can substitute $d$ into (3) and we get:
+    \begin{align}
+        (c,d)=\left(\frac{a}{a^2+b^2},\frac{-b}{a^2+b^2}\right)
+    \end{align}
+    From this we determine that there exists $f:\mathbb{R}^2\to \mathbb{R}^2$ defined by
+    \[f(x,y)=\left(\frac{x}{x^2+y^2},\frac{-y}{x^2+y^2}\right)\]
+    which maps $(a,b)$ to $(c,d)$. We must now determine if this function is bijective in order to show that for every $(a,b)\in \mathbb{R}^2$, there exists a unique pair $(c,d)\in\mathbb{R}^2$ which then is mapped to a unique complex number $c+di\in \mathbb{C}$.\\
+    Recall that a function is bijective if the inverse of such function is the function itself. In other words:
+    \[f \circ f = id_X \quad \text{or} \quad f(f(x,y))=(x,y)\]
+    where 
+    \[X=\{(x,y)\in\mathbb{R}^2\mid x,y)\ne (0,0)\}\]
+    Let $(x',y')=f(x,y)$, so
+    \[x'=\frac{x}{x^2+y^2} \quad \text{and} \quad y'=\frac{-y}{x^2+y^2}\]
+    Then 
+    \[f(x',y')=\left(\frac{x'}{x'^2+y'^2},\frac{-y'}{x'^2+y'^2}\right)\]
+    Rewriting the denominators separately
+    \[x'^2+y'^2=\left(\frac{x}{x^2+y^2}\right)^2+\left(\frac{-y}{x^2+y^2} \right)^2=\frac{1}{x^2+y^2}\]
+    Therefore we can simplify
+    \[f(x',y')=\left(\frac{x'}{\frac{1}{x^2+y^2}},\frac{-y'}{\frac{1}{x^2+y^2}} \right)=(x,y)\]
+    Since $f(f(x,y))=(x,y)$, we can say that $f$ is a bijection. Therefore, for $(a,b)\in \mathbb{R}^2$, there exists a unique pair $(c,d)\in \mathbb{R}^2$. Then, there also exists a unique complex number $c+di=\beta \in \mathbb{C}$
+\end{proof}
+
+\begin{problem}{7}
+Show that \[\frac{-1+\sqrt{3}i}{2}\] is a cube root of 1
+\end{problem}
+\begin{proof}
+    We must show that $(\frac{-1+\sqrt{3}i}{2})^3=1$:
+    \begin{align*}
+        \left(\frac{-1+\sqrt{3}i}{2}\right)^3&=(-1+\sqrt{3}i)^3(1/2)^3\\
+        &=(-1+\sqrt{3}i)(-1+\sqrt{3}i)(-1+\sqrt{3}i)(1/8)\\
+        &=[(-2)+(-2\sqrt{3})](-1+\sqrt{3}i)(1/8)\\
+        &=[(2-(-6)+(-2\sqrt{3}+2\sqrt{3})i](1/8)\\
+        &=(8+0i)(1/8)\\
+        &=8(1/8)\\
+        &=1
+    \end{align*}
+\end{proof}
+
+\begin{problem}{8}
+Find two distinct square roots of $i$
+\end{problem}
+\begin{proof}
+    We must find some $c\in \mathbb{C}$ such that 
+    \[c^2=i\]
+    Let $c=a+bi$, then
+    \[c^2=(a+bi)(a+bi)=(a^2-b^2)+(2ab)i=i\]
+    This means that we have the following
+    \begin{align}
+        2ab=1\\
+        a^2-b^2=0
+    \end{align}
+    Rewriting (6)
+    \[a=b\]
+    then substituting into (5)
+    \[2a^2=1\implies a=\pm \frac{1}{\sqrt{2}}\]
+    Since for every $z\in\mathbb{C}$ there exists a number (an additive inverse) $-z\in\mathbb{C}$ such that
+    \[z+(-z)=1\]
+    then we have two numbers in $\mathbb{C}$ which are the square roots of $i$:
+    \[c=\frac{1}{\sqrt{2}}+\frac{1}{\sqrt{2}}i \quad \text{and} \quad -c=-\frac{1}{\sqrt{2}}+-\frac{1}{\sqrt{2}}i\]
+    where $-c$ is the additive inverse of $c\in \mathbb{C}$.  
+\end{proof}
+
+\begin{problem}{9}
+Find $x\in \mathbb{R}^4$ such that \[(4,-3,1,7)+2x=(5,9,-6,8)\]
+\end{problem}
+\begin{proof}
+    Let $x=(a,b,c,d)$. Then by the property of scalar multiplication in $\mathbb{R}^4$, and more generally $\mathbb{R}^n$
+    \[2x=2(a,b,c,d)=(2a,2b,2c,2d)\]
+    So
+    \begin{align*}
+            (4,-3,1,7)+2x&=(4,-3,1,7)+(2a,2b,2c,2d)\\
+            &=(4+2a,-3+2b,1+2c,7+2d)\\
+            &=(5,9,-6,8)
+    \end{align*}
+    where equality 2 holds by the definition of addition in $\mathbb{R}^4$.
+    Then we have 4 equations to solve:
+    \[4+2a=5\]
+    \[-3+2b=9\]
+    \[1+2c=-6\]
+    \[7+2d=8\]
+    Which produces the 4-tuple
+    \[(a,b,c,d)=(\frac{1}{2},6,-\frac{7}{2},\frac{1}{2})\]
+\end{proof}
+
+\begin{problem}{10}
+Explain why there does not exist $\lambda \in \mathbb{C}$ such that \[\lambda(2-3i,5+4i,-6+7i)=(12-5i,7+22i,-32-9i)\]
+\end{problem}
+\begin{proof}
+    Let $\lambda =a+bi$. Then by the property of scalar multiplication in $\mathbb{C}^3$
+    \[\lambda(2-3i,5+4i,-6+7i)=((a+bi)(2-3i),(a+bi)(5+4i),(a+bi)(-6+7i))\]
+    which then by the definition of multiplication in $\mathbb{C}$ becomes
+    \[((2a+3b)+(2b-3a)i,(5a-4b)+(4a+5b)i,(-6a-7b)+(7a-6b)i)\]
+    Setting it equal to $(12-5i,7+22i,-32-9i)$ produces the following equalities:
+    \[(2a+3b)+(2b-3a)i=12-5i\]
+    \[(5a-4b)+(4a+5b)i=7+22i\]
+    \[(-6a-7b)+(7a-6b)i=-32-9i\]
+    Analyzing the first equality we can solve for $a$ and $b$
+    \begin{align}
+        2a+3b=12\\
+        2b-3a=-5
+    \end{align}
+    Multiplying (7) by 3 and (8) by 2 we get
+    \[6a+9b=36\]
+    \[-6a+4b=-10\]
+    Adding them together:
+    \[13b=26\implies b=2\]
+    Substituting back into (7)
+    \[2a+3(2)=12\implies a=3\]
+    So $\lambda =3+2i$. But if we check this pair for the third equality we will see that while the real portion holds
+    \[-6(3)-7(2)=-32\]
+    the imaginary portion does not
+    \[(7(3)-6(2))i=9i\ne -9i\]
+\end{proof}
+
+\begin{problem}{11}
+Show that $(x+y)+z=x+(y+z)$ $\forall x,y,z\in \mathbb{F}^n$
+\end{problem}
+\begin{proof}
+    Recall that $\mathbb{F}$ can be either $\mathbb{R}$ or $\mathbb{C}$. 
+    Let $x=(x_1,\ldots,x_n),y=(y_1,\ldots,y_n),$ and $z=(z_1,\ldots, z_n)$. Then
+    \begin{align*}
+        (x+y)+z&=((x_1,\ldots,x_n)+(y_1,\ldots,y_n))+(z_1,\ldots,z_n)\\
+        &=((x_1+y_1),\ldots,(x_n+y_n))+(z_1,\ldots,z_n)\\
+        &=((x_1+y_1)+z_1,\ldots, (x_n+y_n)+z_n)\\
+        &=(x_1+(y_1+z_1),\ldots,x_n+(y_n+z_n))\\
+        &=(x_1,\ldots,x_n)+(y_1+z_1,\ldots,y_n+z_n)\\
+        &=x+(y+z)
+    \end{align*}
+    Equalities 1, 2, 3, 5, and 6 hold by the definition of vector addition in $\mathbb{F}^n$. Equality 4 holds by the associative property of addition on $\mathbb{F}$.
+\end{proof}
+
+\begin{problem}{12}
+Show that $(ab)x=a(bx)$ $\forall x\in \mathbb{F}^n$ and $\forall a,b\in \mathbb{F}$
+\end{problem}
+\begin{proof}
+    Let $x=(x_1,\ldots,x_n)$
+    \begin{align*}
+        (ab)x&=((ab)x_1,\ldots,(ab)x_n)\\
+        &=(a(bx_1),\ldots,a(bx_n))\\
+        &=a(bx_1,\ldots,bx_n)\\
+        &=a(bx)
+    \end{align*}
+    Equality 1, 3, and 4 holds by the definition of scalar multiplication in $\mathbb{F}^n$. Equality 2 holds by the associative property of multiplication in $\mathbb{F}$.
+\end{proof}
+
+\begin{problem}{13}
+Show that $1x=x$ $\forall x\in \mathbb{F}^n$
+\end{problem}
+\begin{proof}
+    Let $x=(x_1,\ldots,x_n)$
+    \begin{align*}
+        1x&=1(x_1,\ldots,x_n)\\
+        &=(1x_1,\ldots,1x_n)\\
+        &=(x_1,\ldots,x_n)\\
+        &=x
+    \end{align*}
+    Equality 2 holds true by the definition of scalar multiplication in $\mathbb{F}$. Equality 3 holds true since $1$ is the multiplicative identity in $\mathbb{F}$.
+\end{proof}
+
+\begin{problem}{14}
+Show that $\lambda(x+y)=\lambda x+\lambda y$
+\end{problem}
+\begin{proof}
+    Let $x=(x_1,\ldots ,x_n)$ and $y=(y_1,\ldots,y_n)$.
+    \begin{align*}
+        \lambda (x+y)&=\lambda((x_1,\ldots, x_n)+(y_1,\ldots,y_n))\\
+        &=\lambda(x_1+y_1,\ldots,x_n+y_n)\\
+        &=(\lambda (x_1+y_1),\ldots, \lambda(x_n+y_n))\\
+        &=(\lambda x_1 + \lambda y_1,\ldots, \lambda x_n +\lambda y_n)\\
+        &=(\lambda x_1,\ldots, \lambda x_n)+(\lambda y_1,\ldots, \lambda y_n)\\
+        &=\lambda x + \lambda y
+    \end{align*}
+    Equalities 1,2, and 5 hold by the definition of addition in $\mathbb{F}^n$. Equalities 3 and 6 hold by the definition of scalar multiplication in $\mathbb{F}^n$. Equality 4 holds by the distributive property in $\mathbb{F}$. 
+\end{proof}
+
+\begin{problem}{15}
+Show that $(a+b)x=ax+bx$ $\forall a,b\in \mathbb{F}$ and $\forall x\in \mathbb{F}^n$
+\end{problem}
+\begin{proof}
+    Let $x=(x_1,\ldots,x_n)$.
+    \begin{align*}
+        (a+b)x&=(a+b)(x_1,\ldots,x_n)\\
+        &=((a+b)x_1,\ldots,(a+b)x_n)\\
+        &=(ax_1+bx_1,\ldots,ax_n+bx_n)\\
+        &=(ax_1,\ldots, ax_n)+(bx_1,\ldots,bx_n)\\
+        &=ax+bx
+    \end{align*}
+    Equalities 2 and 4 hold by the definition of scalar multiplication in $\mathbb{F}^n$. Equality 3 holds by the distributive property in $\mathbb{F}$.
+\end{proof}
+
+\newpage
+
+% ====================================================================
+% SECTION 1B: Definition of a Vector Space
+% ====================================================================
+{\large \bfseries Section 1B: Definition of a Vector Space} \\
+We will define $V$ as a vector space over $\F$.
+
+\begin{problem}{1}
+Prove that $-(-v)=v$ for all $v \in V$
+\end{problem}
+\begin{proof}
+We will assume $(-1)v=-v$ for every $v \in V$ as shown in the textbook under 1.32.
+\begin{align*}
+-(-v) &= (-1)(-v) && \text{by 1.32} \\
+      &= (-1)((-1)v) && \text{by 1.32 inside the parenthesis} \\
+      &= ((-1)(-1))v && \text{by associativity of scalar multiplication} \\
+      &= (1)v        && \text{since } (-1)(-1) = 1 \text{ in } \F \\
+      &= v           && \text{by the multiplicative identity of } V
+\end{align*}
+\end{proof}
+
+\begin{problem}{2}
+    Suppose $a\in \F, v\in V$, and $av=0$. Prove that $a=0$ or $v=0$
+\end{problem}
+\begin{proof}
+    Note, we are relying on 1.30 and 1.31 from the textbook which assert the following:
+    \[0v=0 \quad \forall v\in V\]
+    and
+    \[a0=0 \quad \forall a \in \F\]
+    Now, we can write the statement we are trying to prove as
+    \[av=0\implies (a=0 \lor v=0)\]
+    which is logically equivalent to 
+    \[\neg(av=0)\lor (a=0\lor v=0)\]
+    For the sake of contradiction, we negate the statement 
+    \[\neg(\neg(av=0)\lor (a=0 \lor v=0))\equiv (av=0)\land (a\ne0\land v\ne0)\]
+    RAA: let $av=0$, $a\ne 0$, and $v \ne 0$. 
+    Then 
+    \[av=a^{-1}av=a^{-1}0=0\]
+    but also
+    \[av=a^{-1}av=1v=v\ne 0\]
+    therefore contradiction. Thus, the original statement holds true.
+\end{proof}
+    \newpage
+    \begin{problem}{3}
+        Suppose $v,w,\in V$. Explain why there exists a unique $x\in V$ such that $v+3x=w$
+    \end{problem}
+    \begin{proof}
+    We will start by showing the existence of $x$. 
+    Let $x=3^{-1}(w+(-v))$
+    \begin{align*}
+        v+3(3^{-1}(w+(-v)))&=v+3(3^{-1}w+3^{-1}(-v))\\
+        &=v+3(3^{-1}w)+3(3^{-1}(-v))\\
+        &=v+(3(3^{-1}))w+(3(3^{-1}))(-v)\\
+        &=v+1w+1(-v)\\
+        &=v+(-v)+w\\
+        &=0+w\\
+        &=w
+    \end{align*}
+    Therefore, $x=3^{-1}(w+(-v))$ is a solution. Now we must show it is unique. Suppose $x'$ is also a solution. We will work under the assumption that $\forall a\in \F$, $-a=-1a$.
+    \begin{align*}
+        0&=w+(-w)\\
+        &=(v+3x)+(-(v+3x'))\\
+        &=(v+3x)+(-1(v+3x'))\\
+        &=(v+3x)+(-1v+(-1)(3x'))\\
+        &=(v+3x)+(-v+(-1(3))x')\\
+        &=(v+3x)+(-v+(3(-1))x')\\
+        &=v+(-v)+3x+3(-1x')\\
+        &=0+3x+3(-x')\\
+        &=3(x+(-x'))
+    \end{align*}
+    As shown in 1B problem 2, either $3=0$ or $(x+(-x'))=0$. Since $3\ne 0$, then
+    \begin{align*}
+        x+(-x')&=0\\
+        x+(-x')+x'&=0+x'\\
+        x+0&=x'+0\\
+        x&=x'
+    \end{align*}
+    Thus, $x$ is unique. 
+    \end{proof}
+
+    \begin{problem}{4}
+        The empty set is not a vector space. The empty set fails to satisfy only one of the requirements listed in the definition of a vector space (1.20). Which one?
+    \end{problem}
+    \begin{proof}
+    If we rewrite the 6 properties in 1.20 with logical statements, we will see that they all, but one, have as their antecedent the existence of some vector(s) in the vector space $V$. For instance, the commutative property of addition:
+    \[(\forall u,v\in V)(u,v\in V \implies u+v=v+u)\]
+    Thus, if $V\subseteq\emptyset$, then the statement is vacuously true as no elements exist.
+    However, the one dissimilar property is the additive identity as it does not depend on the existence of vectors within the vector space. It is a proposition that demands the existence of an element $0\in V$. Therefore, since $0\notin \emptyset$, then the empty set does not have an additive identity. This means the empty set is not a vector space.
+    \end{proof}
+        
+    \begin{problem}{5}
+        Show that in the definition of a vector space (1.20), the additive inverse condition can be replaced with the condition that
+        \[0v=0 \quad \text{for all }v\in V\]
+        Here the 0 on the left side is the number 0, and the 0 on the right side is the additive identity of $V$.
+    \end{problem}
+    \begin{proof}
+    We must show that the properties of a vector space \textbf{with} the additive inverse property imply $0v=0$. Then we must show that the properties \textbf{without} the additive inverse property and \textbf{with} $0v=0$ imply the additive inverse property.\\
+    $\implies$\\
+    Suppose we have the usual properties of a vector space $V$. Then
+    \begin{align*}
+        0v&=(0+0)v\\
+        &=0v+0v
+    \end{align*}
+    Then if we add the additive inverse of $0v$ to both sides we get
+    \[0=0v\]
+    $\Longleftarrow$\\
+    Suppose $0v=0$ but we don't formally have the additive inverse property.
+    \begin{align*}
+        0v&=(1+(-1))v=1v+(-1)v=v+(-1)v=0
+    \end{align*}
+    Therefore, $(-1)v$ is the inverse of $v$ $\forall v\in V$.
+    Note: we know $0=1+(-1)$ by the additive inverse property in $\F$.
+    Therefore, the two conditions/properties can be interchanged. 
+    \end{proof}
+    \begin{problem}
+        Let $\infty$ and $-\infty$ denote two distinct objects, neither of which is in $\R$. Define an addition and scalar multiplication on $\R \cup \{\infty,-\infty\}$ as you could guess from the notation. Specifically, the sum and product of two real numbers is as usual, and for $t\in \R$ define
+        \[
+        t\infty=\begin{cases}
+            -\infty \quad &\text{if   } t<0,\\
+            0  &\text{if   } t=0,\\
+            \infty &\text{if   } t>0,
+        \end{cases}
+        \qquad t(-\infty)=\begin{cases}
+            \infty \quad &\text{if   } t<0,\\
+            0 &\text{if   } t=0,\\
+            -\infty &\text{if   } t>0,
+        \end{cases}
+        \]
+    and
+    \[t+\infty = \infty + t = \infty + \infty = \infty\]
+    \[t+(-\infty)=(-\infty)+t=(-\infty) +(-\infty)=-\infty\]
+    \[\infty + (-\infty)=(-\infty)+\infty =0\]
+    With these operations of addition and scalar multiplication, is $\R \cup \{\infty, -\infty\}$ a vector space over $\mathbb{R}$? Explain.
+    \end{problem}
+    \begin{proof}
+    Immediately we can prove $\R \cup \{\infty,-\infty\}$ over $\R$ is not a vector space by checking for associativity of addition. 
+    \[(\infty + \infty )+(-\infty)=\infty +(-\infty)=0\]
+    \[\infty +(\infty +(-\infty))=\infty + 0=\infty\]
+    Since associativity of addition does not hold $\forall a,b,c\in \R\cup\{\infty, -\infty\}$, then $\R \cup \{\infty, -\infty\}$ is not a vector space over $\R$.
+    \end{proof}
+
+    \begin{problem}{7}
+        Suppose $S$ is a nonempty set. Let $V^S$ denote the set of functions from $S$ to $V$. Define a natural addition and scalar multiplication on $V^S$, and show that $V^S$ is a vector space with these definitions.
+    \end{problem}
+    Assuming $V$ is a vector space over $\F$.\\
+    \noindent \textbf{Addition}: for $f,g\in V^S$, $x\in S$, and $f(x),g(x)\in V$, addition is defined as 
+    \[(f+g)(x)=f(x)+g(x)\]
+    \noindent \textbf{Scalar Multiplication}: for $f\in V^S$, $x\in S$, $\lambda \in \F$, and $f(x)\in V$, scalar multiplication is defined as
+    \[(\lambda f)(x)=\lambda f(x)\]
+    Now we will prove how $V^S$ inherits the properties of a vector space.\\
+    \noindent \textbf{Commutativity}: for all $f,g\in V^S$ and $x\in S$, since $f(x),g(x)\in V$ and addition is commutative in $V$,
+    \[(f+g)(x)=f(x)+g(x)=g(x)+f(x)=(g+f)(x)\]
+
+    \noindent \textbf{Associativity}: for all $f,g,h\in V^S$, $x\in S$, since $f(x),g(x),h(x)\in V$ and addition is associative in $V$,
+    \begin{align*}
+        (f+g)(x)+h(x)&=[f(x)+g(x)]+h(x)\\
+        &=f(x)+[g(x)+h(x)]\\
+        &=f(x)+(g+h))(x)
+    \end{align*}
+    Now for associativity of scalar multiplication. Let $a,b\in \F$. Since scalar multiplication is associative in $V$,
+    \[(a(bf))(x)=a[(bf)(x)]=a[bf(x)]=(ab)f(x)\]
+    \noindent \textbf{Additive Identity}: first, define $0(x)\in V^S$, the additive identity of $V^S$
+    \[0(x)=0\]
+    for all $x\in S$.\\
+    Now, let $f\in V^S$. Since $f(x)\in V$ and $0$ is the additive identity in $V$, 
+    \[(f+0)(x)=f(x)+0(x)=f(x)+0 = f(x)\]
+    \noindent \textbf{Additive Inverse}: for all $f\in V^S$, define $(-f)\in V^S$ as its inverse such that
+    \[(-f)(x)=-f(x)\]
+    for all $x\in S$. Since $-f(x)\in V$
+    \[(f+(-f))(x)=f(x)+(-f(x))=0\]
+    \noindent \textbf{Multiplicative Identity}: consider the scalar $1\in \F$. For all $f\in V^S$, $x\in S$, by definition of scalar multiplication in $V^S$ we have
+    since $f(x)\in V$,
+    \[(1f)(x)=1f(x)\]
+    and since $f(x)\in V$
+    \[1f(x)=f(x)\]
+    \noindent \textbf{Distributive Property}: for all $f,g\in V^S$, $a\in \F$ and $x\in S$, by the definition of scalar multiplication in $V^S$ we have
+    \[(a(f+g))(x)=a((f+g)(x))=a(f(x)+g(x))\]
+    and since $f(x),g(x)\in V$
+    \[a[f(x)+g(x)]=af(x)+ag(x)\]
+    which is equivalent to
+    \[(af)(x)+(ag)(x)\]
+    Now, to distribute scalars over a vector, let $b\in \F$, by the definition of scalar multiplication we have
+    \[((a+b)f)(x)=(a+b)f(x)\]
+    and since $f(x)\in V$
+    \[(a+b)f(x)=af(x)+bf(x)\]
+    which is equivalent to 
+    \[(af)(x)+(bf)(x)\]
+
+    \begin{problem}{8}
+        Suppose $V$ is a real vector space.
+        \begin{itemize}
+            \item The $\textit{complexification}$ of $V$, denoted by $V_C$, equals $V\times V$. An element of $V_C$ is an ordered pair $(u,v)$, where $u,v\in V$, but we write this as $u+iv$.
+            \item Addition on $V_C$ is defined by
+            \[(u_1+iv_1)+(u_2+iv_2)=(u_1+u_2)+i(v_1+v_2)\]
+            for all $u_1,v_1,u_2,v_2\in V$
+            \item Complex scalar multiplication on $V_C$ is defined by
+            \[(a+bi)(u+iv)=(au-bv)+i(av+bu)\]
+            for all $a,b\in \R$ and all $u,v\in V$.
+        \end{itemize}
+        Prove that with the definitions of addition and scalar multiplication as above, $V_C$ is a complex vector space.\\
+        \textit{Think of $V$ as a subset of $V_C$ by identifying $u\in V$ with $u+i0$. The construction of $V_C$ from $V$ can then be thought of as generalizing the construction of $\C^n$ from $\R ^n$. }
+    \end{problem}
+    \begin{proof}
+    Recall that we showed $\C$ had the properties of being commutative under addition, associative under addition and scalar multiplication, an additive and multiplicative identity, a unique additive inverse for every element, and being both left and right distributive. Since there exists an injective function
+    \[f:V_C\to \C\]
+    where \[f(u,v)=u+iv\in \C\]
+    then we can treat $V_C$ as a subset of $\C$ or a set of complex numbers. With that, $V_C$ is naturally commutative and associative over addition. 
+    \\Note, we are checking to see if $V_C$ is a complex vector space, therefore the scalar multiplication is dependent on $\C$. So, scalar multiplication is associative due to the associativity of multiplication on $\C$ (since $V_C\subset \C)$. 
+    \\Then, since $V$ is a vector space, it naturally has an additive identity $0\in V$ and a multiplicative identity $1\in V$. Therefore, $V_C$ also has such elements as $V\subset V_C$.
+    \\Next, for every $v\in V$, there exists $-v\in V$ such that $v+(-v)=0$. So, if we have $(a,b)\in V_C$, there exists $-a\in V$ and $-b\in V$. This in turn means that there exists $(-a,-b)\in V_C$. Since $(-a,-b)$ is the additive inverse of $(a,b)$
+    \[(a+ib)+(-a+i(-b))=(a+(-a))+i(b+(-b))=0+i0=0\]
+    then $V_C$ fulfills the additive inverse property.
+    \\Lastly, recall the distributive property is dependent on scalars in $\C$. Since elements in $V_C$ are elements in $\C$, then this simplifies to the distributive property on $\C$ which holds true.
+    
+    \end{proof}
+\end{document}
